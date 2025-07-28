@@ -82,22 +82,6 @@ const AttemptsGrid: React.FC<AttemptsGridProps> = ({
           </Typography>
         </Typography>
 
-        {/* Position Labels */}
-        <Grid container spacing={1} sx={{ mb: 2 }}>
-          {['1st', '2nd', '3rd', '4th', '5th'].map((label) => (
-            <Grid item xs key={label}>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                textAlign="center"
-                fontWeight="bold"
-              >
-                {label}
-              </Typography>
-            </Grid>
-          ))}
-        </Grid>
-
         {/* Previous Attempts */}
         {Array.from({ length: maxAttempts }, (_, attemptIndex) => {
           const guess = previousGuesses[attemptIndex];
@@ -117,7 +101,7 @@ const AttemptsGrid: React.FC<AttemptsGridProps> = ({
                 }
                 
                 return (
-                  <Grid item xs key={positionIndex}>
+                  <Grid key={positionIndex}>
                     {renderPositionCell(answer, feedback, isCurrentAttempt)}
                   </Grid>
                 );

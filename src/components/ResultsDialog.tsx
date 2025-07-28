@@ -6,7 +6,6 @@ import {
   DialogActions,
   Typography,
   Button,
-  Box,
   List,
   ListItem,
   ListItemText,

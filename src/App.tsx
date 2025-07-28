@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Container, CircularProgress, Box, Alert } from '@mui/material';
 import Header from './components/Header';
@@ -7,7 +7,7 @@ import AttemptsGrid from './components/AttemptsGrid';
 import AnswerBank from './components/AnswerBank';
 import FeedbackLegend from './components/FeedbackLegend';
 import ResultsDialog from './components/ResultsDialog';
-import { useTodaysPuzzle } from './hooks/useTodaysPuzzle';
+import { useTodaysPuzzle } from './hooks/UseTodaysPuzzle';
 import type { Guess } from './types/Guess';
 import type { GameState } from './types/GameState';
 
@@ -191,7 +191,7 @@ function App() {
         
         <QuestionCard 
           question={puzzle.question}
-          description={`Data from ${puzzle.source} (${puzzle.sourceDate})`}
+          description={`Data from ${puzzle.source} (pulled on ${puzzle.sourceDate})`}
         />
 
         <AttemptsGrid
