@@ -6,9 +6,7 @@ import {
   DialogActions,
   Typography,
   Button,
-  List,
-  ListItem,
-  ListItemText,
+  Box,
 } from '@mui/material';
 
 interface ResultsDialogProps {
@@ -43,39 +41,57 @@ const ResultsDialog: React.FC<ResultsDialogProps> = ({
         }
       }}
     >
-      <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
-        <Typography variant="h4" component="div" sx={{ mb: 1 }}>
-          {gameWon ? '🎉 Congratulations!' : '😅 Game Over'}
+      <DialogTitle sx={{ textAlign: 'center', pb: 2, pt: 3 }}>
+        <Typography variant="h4" component="div" sx={{ mb: 0.5 }}>
+          {gameWon ? '🎉 Congratulations!' : '😬 Game Over'}
         </Typography>
-        <Typography variant="h6" color="text.secondary">
+        <Typography variant="body1" color="text.secondary">
           {gameWon 
             ? `You solved it in ${attemptsUsed}/${maxAttempts} attempts!`
-            : `Better luck next time! (${attemptsUsed}/${maxAttempts} attempts)`
+            : `Better luck next time! (Used all ${maxAttempts} attempts)`
           }
         </Typography>
       </DialogTitle>
 
-      <DialogContent>
-        <Typography variant="h6" sx={{ mb: 2 }}>
+      <DialogContent sx={{ pt: 0, pb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
           Correct Answer:
         </Typography>
-        <List dense>
+        <Box sx={{ 
+          backgroundColor: 'action.hover', 
+          borderRadius: 1, 
+          p: 2,
+          border: '1px solid',
+          borderColor: 'divider'
+        }}>
           {correctAnswers.map((answer, index) => (
-            <ListItem key={index} sx={{ py: 0.5 }}>
-              <ListItemText
-                primary={`${index + 1}. ${answer}`}
-                sx={{
-                  '& .MuiListItemText-primary': {
-                    fontWeight: 'medium',
-                  }
+            <Typography 
+              key={index} 
+              variant="body1" 
+              sx={{ 
+                fontWeight: 500,
+                mb: index < correctAnswers.length - 1 ? 0.5 : 0,
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <Box 
+                component="span" 
+                sx={{ 
+                  minWidth: '24px',
+                  fontWeight: 'bold',
+                  color: 'primary.main'
                 }}
-              />
-            </ListItem>
+              >
+                {index + 1}.
+              </Box>
+              {answer}
+            </Typography>
           ))}
-        </List>
+        </Box>
       </DialogContent>
 
-      <DialogActions sx={{ justifyContent: 'center', gap: 2, pb: 3 }}>
+      <DialogActions sx={{ justifyContent: 'center', pb: 3, pt: 0 }}>
         <Button
           variant="outlined"
           onClick={onShare}

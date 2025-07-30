@@ -2,15 +2,13 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/Firebase';
 import type { PuzzleData } from '../types/PuzzleData';
+import { today } from '../helpers/Dates'
 
 export class PuzzleService {
   private static COLLECTION_NAME = 'puzzles';
 
   static async getTodaysPuzzle(): Promise<PuzzleData | null> {
-    const today_arr = new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York' }).split("/");
-    const today = `${today_arr[2]}-${today_arr[0].padStart(2, "0")}-${today_arr[1].padStart(2, "0")}`;
-    const puzzleData = await PuzzleService.getPuzzleByDate(today);
-    return puzzleData;
+    return await PuzzleService.getPuzzleByDate(today());
   }
 
   static async getPuzzleByDate(date: string): Promise<PuzzleData | null> {

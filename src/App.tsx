@@ -10,6 +10,7 @@ import ResultsDialog from './components/ResultsDialog';
 import { useTodaysPuzzle } from './hooks/UseTodaysPuzzle';
 import type { Guess } from './types/Guess';
 import type { GameState } from './types/GameState';
+import { today } from './helpers/Dates';
 
 // Dark theme
 const darkTheme = createTheme({
@@ -57,10 +58,10 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  // Replace with actual hook when ready:
   const { data: puzzle, isLoading, error } = useTodaysPuzzle();
 
   const [gameState, setGameState] = useState<GameState>({
+    date: today(),
     currentGuess: [],
     previousGuesses: [],
     attemptsUsed: 0,
@@ -145,7 +146,7 @@ function App() {
       }).join('')
     ).join('\n');
     
-    const shareText = `Ranklr ${gameState.gameWon ? gameState.attemptsUsed : 'X'}/${gameState.maxAttempts}\n\n${emojiResult}`;
+    const shareText = `ranklr.io ${gameState.gameWon ? gameState.attemptsUsed : 'X'}/${gameState.maxAttempts} on ${gameState.date}\n\n${emojiResult}`;
     
     if (navigator.clipboard) {
       navigator.clipboard.writeText(shareText);
@@ -191,7 +192,7 @@ function App() {
         
         <QuestionCard 
           question={puzzle.question}
-          description={`Data from ${puzzle.source} (pulled on ${puzzle.sourceDate})`}
+          description={`Data pulled on ${puzzle.sourceDate}, from ${puzzle.source}`}
         />
 
         <AttemptsGrid
@@ -204,7 +205,7 @@ function App() {
         />
 
         <AnswerBank
-          possibleAnswers={puzzle.possibleAnswers}
+          possibleAnswers={puzzle.possibleAnswers.toSorted()}
           selectedAnswers={gameState.currentGuess}
           onAnswerSelect={handleAnswerSelect}
           disabled={gameState.gameComplete}

@@ -4,7 +4,6 @@ import {
   CardContent, 
   Typography, 
   Box, 
-  Grid, 
   Button,
   useTheme 
 } from '@mui/material';
@@ -54,17 +53,22 @@ const AttemptsGrid: React.FC<AttemptsGridProps> = ({
             theme.palette.grey[600]
           }`,
           borderRadius: 1,
-          p: 2,
+          p: { xs: 0.5, sm: 1 },
           textAlign: 'center',
-          fontSize: '0.875rem',
+          fontSize: { xs: '0.7rem', sm: '0.875rem' },
           fontWeight: 'bold',
-          minHeight: 60,
+          minHeight: { xs: 45, sm: 60 },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           transition: 'all 0.2s',
           boxShadow: isCurrent ? `0 0 8px ${theme.palette.primary.main}40` : 'none',
           color: feedback || isCurrent ? 'white' : theme.palette.text.primary,
+          // Ensure content wraps within cell without changing cell dimensions
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
+          hyphens: 'auto',
+          lineHeight: 1.1,
         }}
       >
         {answer || ''}
@@ -82,33 +86,73 @@ const AttemptsGrid: React.FC<AttemptsGridProps> = ({
           </Typography>
         </Typography>
 
-        {/* Previous Attempts */}
-        {Array.from({ length: maxAttempts }, (_, attemptIndex) => {
-          const guess = previousGuesses[attemptIndex];
-          const isCurrentAttempt = attemptIndex === attemptsUsed && currentGuess.length > 0;
-          
-          return (
-            <Grid container spacing={1} key={attemptIndex} sx={{ mb: 1 }}>
-              {Array.from({ length: 5 }, (_, positionIndex) => {
-                let answer: string | undefined;
-                let feedback: string | undefined;
-                
-                if (guess) {
-                  answer = guess.selectedAnswers[positionIndex];
-                  feedback = guess.feedback[positionIndex];
-                } else if (isCurrentAttempt) {
-                  answer = currentGuess[positionIndex];
-                }
-                
-                return (
-                  <Grid key={positionIndex}>
-                    {renderPositionCell(answer, feedback, isCurrentAttempt)}
-                  </Grid>
-                );
-              })}
-            </Grid>
-          );
-        })}
+        {/* Position Labels */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            gap: { xs: 0.5, sm: 1 },
+            mb: 2,
+          }}
+        >
+          {['1st', '2nd', '3rd', '4th', '5th'].map((label, index) => (
+            <Box
+              key={index}
+              sx={{
+                textAlign: 'center',
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                color: 'text.secondary',
+                fontWeight: 'bold',
+              }}
+            >
+              {label}
+            </Box>
+          ))}
+        </Box>
+
+        {/* Attempts Grid - Fixed CSS Grid Layout */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateRows: `repeat(${maxAttempts}, 1fr)`,
+            gap: { xs: 0.5, sm: 1 },
+            mb: 3,
+          }}
+        >
+          {Array.from({ length: maxAttempts }, (_, attemptIndex) => {
+            const guess = previousGuesses[attemptIndex];
+            const isCurrentAttempt = attemptIndex === attemptsUsed && currentGuess.length > 0;
+            
+            return (
+              <Box
+                key={attemptIndex}
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(5, 1fr)',
+                  gap: { xs: 0.5, sm: 1 },
+                }}
+              >
+                {Array.from({ length: 5 }, (_, positionIndex) => {
+                  let answer: string | undefined;
+                  let feedback: string | undefined;
+                  
+                  if (guess) {
+                    answer = guess.selectedAnswers[positionIndex];
+                    feedback = guess.feedback[positionIndex];
+                  } else if (isCurrentAttempt) {
+                    answer = currentGuess[positionIndex];
+                  }
+                  
+                  return (
+                    <Box key={positionIndex}>
+                      {renderPositionCell(answer, feedback, isCurrentAttempt)}
+                    </Box>
+                  );
+                })}
+              </Box>
+            );
+          })}
+        </Box>
 
         <Button
           variant="contained"
