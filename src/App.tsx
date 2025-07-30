@@ -205,7 +205,7 @@ function App() {
         />
 
         <AnswerBank
-          possibleAnswers={puzzle.possibleAnswers.toSorted()}
+          possibleAnswers={puzzle.possibleAnswers}
           selectedAnswers={gameState.currentGuess}
           onAnswerSelect={handleAnswerSelect}
           disabled={gameState.gameComplete}
