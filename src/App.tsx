@@ -209,6 +209,7 @@ function App() {
           selectedAnswers={gameState.currentGuess}
           onAnswerSelect={handleAnswerSelect}
           disabled={gameState.gameComplete}
+          previousGuesses={gameState.previousGuesses}
         />
 
         <FeedbackLegend />
