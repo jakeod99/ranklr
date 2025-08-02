@@ -16,6 +16,8 @@ interface AttemptsGridProps {
   maxAttempts: number;
   onSubmitGuess: () => void;
   canSubmit: boolean;
+  gameComplete: boolean;
+  onShare: () => void;
 }
 
 const AttemptsGrid: React.FC<AttemptsGridProps> = ({
@@ -24,7 +26,9 @@ const AttemptsGrid: React.FC<AttemptsGridProps> = ({
   attemptsUsed,
   maxAttempts,
   onSubmitGuess,
-  canSubmit
+  canSubmit,
+  gameComplete,
+  onShare
 }) => {
   const theme = useTheme();
 
@@ -158,10 +162,10 @@ const AttemptsGrid: React.FC<AttemptsGridProps> = ({
           variant="contained"
           fullWidth
           sx={{ mt: 3, py: 2, fontSize: '1rem' }}
-          disabled={!canSubmit}
-          onClick={onSubmitGuess}
+          disabled={gameComplete ? false : !canSubmit}
+          onClick={gameComplete ? onShare : onSubmitGuess}
         >
-          Submit Guess
+          {gameComplete ? 'Share Results' : 'Submit Guess'}
         </Button>
       </CardContent>
     </Card>

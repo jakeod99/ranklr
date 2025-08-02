@@ -202,6 +202,8 @@ function App() {
           maxAttempts={gameState.maxAttempts}
           onSubmitGuess={handleSubmitGuess}
           canSubmit={gameState.currentGuess.length === 5 && !gameState.gameComplete}
+          gameComplete={gameState.gameComplete}
+          onShare={handleShare}
         />
 
         <AnswerBank
